@@ -10,7 +10,10 @@
 		UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 		NSString     *text       = [command.arguments objectAtIndex:0];
 
-		[pasteboard setValue:text forPasteboardType:@"public.text"];
+		// Fix an issue with pasting clipboard contents to another app
+		// https://stackoverflow.com/a/46660210
+		// [pasteboard setValue:text forPasteboardType:@"public.text"];
+		pasteboard.string = text;
 
 		CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:text];
 		[self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
